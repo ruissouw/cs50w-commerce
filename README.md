@@ -24,7 +24,7 @@ Follow the steps below to get this project running on your local machine.
    
 git clone https://github.com/ruissouw/cs50w-commerce.git
 
-cd cs50w-mail
+cd cs50w-commerce
 
 2. **Create a Virtual Environment**
    
