@@ -1,0 +1,31 @@
+<div class="container-fluid px-4 mb-4" style="padding-top: 20px">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-11 mx-auto">
+        <div class="card listing-card shadow-sm p-3">
+          <a href="{% url 'listing' listing.id %}" class="stretched-link text-decoration-none text-dark"></a>
+          <div class="row no-gutters align-items-center">
+            <div class="col-md-4 col-12 mb-3 mb-md-0">
+              <img src="{{ listing.image }}" alt="Image of {{ listing.title }}"
+                   class="img-fluid rounded" style="max-height: 250px; width: 100%; object-fit: cover;">
+            </div>
+            <div class="col-md-8 col-12" style="padding-left: 30px;">
+              <h3>{{ listing.title }}</h3>
+              <h4>Current Price: ${{ listing.price }}</h4>
+              <h5>Details:</h5>
+              <ul class="pl-3">
+                <li>Category: {{ listing.category }}</li>
+                <li>Condition: {{ listing.condition }}</li>
+                <li>Listed By: {{ listing.user.username }}</li>
+                <li>Listed On: {{ listing.datetime }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+
+
+

@@ -1,0 +1,38 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if listings %}
+        <h2 style="padding-left:20px;">Active Listings ({{ listings|length }})</h2>
+        <form action="{% url 'index' %}" method="post">
+            {% csrf_token %}
+            <div class="input-group" style="padding-left:20px;">
+                <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" name="categories" style="margin-right:20px;">
+                    <option selected value="Categories">Categories</option>
+                    <option value="Home">Home</option>
+                    <option value="Fashion">Fashion</option>
+                    <option value="Toys">Toys</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Education">Education</option>
+                    <option value="Others">Others</option>
+                </select>
+                <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" name="condition" style="margin-right:20px;">
+                    <option selected value="Condition">Condition</option>
+                    <option value="Brand New">Brand New</option>
+                    <option value="Lightly Used">Lightly Used</option>
+                    <option value="Moderately Used">Moderately Used</option>
+                    <option value="Heavily Used">Heavily Used</option>
+                </select>
+                <button class="btn btn-outline-light" type="submit">Filter Listings</button>
+            </div>
+        </form>
+        {% for listing in listings %}
+            {% include "auctions/listing_card.html" %}
+        {% endfor %}
+    {% else %}
+        <h2 style="padding-left:20px">Active Listings</h2>
+        No listings avaiblable at this time. 
+        {% if signed_in %}
+            Why don't you <a href="{% url 'create' %}">create one</a>?
+        {% endif %}
+    {% endif %}
+{% endblock %}

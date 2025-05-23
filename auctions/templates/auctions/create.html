@@ -1,0 +1,25 @@
+{% extends "auctions/layout.html" %}
+{% load widget_tweaks %}
+
+{% block body %}
+    <div class="card bg-card shadow-sm p-3">
+        {% if error %}
+        <div class="alert alert-danger" role="alert">
+            Please fill in all fields!
+        </div>
+        {% endif %}
+        <div style="margin-left:20px;">
+            <h2>Create Listing</h2>
+            <form action="{% url 'create' %}" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field|add_class:"form-control"}}
+                {% endfor %}
+                <div class="col-auto" style="margin-top:20px;">
+                    <button type="submit" class="btn btn-primary mb-3">List Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

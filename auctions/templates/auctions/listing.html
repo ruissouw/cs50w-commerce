@@ -1,0 +1,95 @@
+{% extends "auctions/layout.html" %}
+{% load widget_tweaks %}
+
+{% block body %}
+    {% if listing %}
+        <div class="card bg-card shadow-sm p-3">
+            <div style="margin:20px">
+                {% if user.is_authenticated and not owner %}
+                    {% if listing.closed and winning %}
+                        <div class="alert alert-success" role="alert">
+                            Congratulations- you were the highest bidder!
+                        </div>
+                    {% elif bid_error %}
+                        <div class="alert alert-danger" role="alert">
+                            Please place a bid higher than the current price!
+                        </div>
+                    {% elif comment_error %}
+                        <div class="alert alert-danger" role="alert">
+                            Comments should be 5000 characters max!
+                        </div>
+                    {% elif placed_bid %}
+                        <div class="alert alert-success" role="alert">
+                            Congratulations- you are now the highest bidder!
+                        </div>
+                    {% endif %}
+                {% endif %}
+                <a id="top">
+                    <h3 style="margin-bottom:20px;">Listing: {{ listing.title }}</h3>
+                </a>
+                {% if user.is_authenticated and not owner %}
+                    <form action="{% url 'add_to_watchlist' listing.id %}" method="post" style="padding-bottom:10px">
+                        {% csrf_token %}
+                        {% if watchlist %}
+                            <input class="btn btn-primary" type="submit" value="Remove from watchlist" name="watchlist">
+                        {% else %}
+                            <input class="btn btn-primary" type="submit" value="Add to watchlist" name="watchlist">
+                        {% endif %}
+                    </form>
+                {% elif user.is_authenticated and owner and not listing.closed %}
+                    <form action="{% url 'close' listing.id %}" method="post" style="padding-bottom:10px">
+                        {% csrf_token %}
+                        <input class="btn btn-primary" type="submit" value="Close Listing" name="close">
+                    </form>
+                {% endif %}
+                <img src="{{ listing.image }}" alt="Image of {{ listing.title }}" style="max-height:350px;">
+                <h4>Current Price: ${{ listing.price }}</h4>
+                {% if not listing.closed %}
+                    <p>
+                        {{ bids }} bid(s) so far.
+                        {% if winning %}
+                            Your bid is the current bid.
+                        {% endif %}
+                    </p>
+                {% else %}
+                    <p>Listing has been closed.</p>
+                {% endif %}
+                {% if user.is_authenticated and not owner and not listing.closed %}
+                    <form action="{% url 'bid' listing.id %}" method="post" style="padding-bottom:10px">
+                        {% csrf_token %}
+                        {{ bid_form.amount|add_class:"form-control" }}
+                        <input class="btn btn-primary" type="submit" value="Place Bid" style="margin-top:10px;">
+                    </form>
+                {% endif %}
+                <h5>Details:</h5>
+                <ul>
+                    <li>Category: {{ listing.category }}</li>
+                    <li>Condition: {{ listing.condition }}</li>
+                    <li>Listed By: {{ listing.user.username }}</li>
+                    <li>Listed On: {{ listing.datetime }}</li>
+                </ul>
+                <h4>Description</h4>
+                <p>{{ listing.description }}</p>
+                {% if user.is_authenticated and not listing.closed %}
+                    <h4>Leave a comment</h4>
+                    <form action="{% url 'comment' listing.id %}" method="post" style="padding-bottom:10px">
+                        {% csrf_token %}
+                        {{ comment_form.text|add_class:"form-control" }}
+                        <input class="btn btn-primary" type="submit" value="Post Comment" style="margin-top:10px;">
+                    </form>
+                {% endif %}
+                {% if comments %}
+                    <h4>Comments ({{ comments|length }})</h4>
+                    {% for comment in comments %}
+                        <h6>{{ comment.user }}</h6>
+                        <p>{{ comment.text }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        
+    {% else %}
+        <h2 style="padding-left:20px">No result</h2>
+        Listing not found. Why don't you <a href="{% url 'create' %}">create one</a>?
+    {% endif %}
+{% endblock %}

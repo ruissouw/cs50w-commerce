@@ -1,0 +1,33 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 style="margin-left:20px; margin-bottom:20px;">My Listings</h2>
+
+    {% if actives or closes or won_listings %}
+        {% if actives %}
+            <h3 style="padding-left:20px">Active Listings ({{ actives|length }})</h3>
+            {% for listing in actives %}
+                {% include "auctions/listing_card.html" with listing=listing %}
+            {% endfor %}
+        {% endif %}
+
+        {% if closes %}
+            <h3 style="padding-left:20px; padding-top:40px;">Closed Listings ({{ closes|length }})</h3>
+            {% for listing in closes %}
+                {% include "auctions/listing_card.html" with listing=listing %}
+            {% endfor %}
+        {% endif %}
+
+        {% if won_listings %}
+            <h3 style="padding-left:20px; padding-top:40px;">Listings Won ({{ won_listings|length }})</h3>
+            {% for listing in won_listings %}
+                {% include "auctions/listing_card.html" with listing=listing %}
+            {% endfor %}
+        {% endif %}
+    {% else %}
+        <div style="margin-left: 20px">
+            You have no listings. Why don't you <a href="{% url 'create' %}">create one</a>?
+        </div>
+    {% endif %}
+{% endblock %}
+
