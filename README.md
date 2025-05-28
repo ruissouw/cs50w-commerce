@@ -1,6 +1,9 @@
 # CS50W Commerce
 A web-based e-commerce site built using Django, HTML and CSS (with Bootstrap). This project was created as part of Harvard’s CS50 Web Programming with Python and JavaScript course.
 
+## Video Demonstration
+https://youtu.be/_LVwTnZrtLY
+
 ## Features
 - Create a listing with a base price
 - Bid on items of other users
